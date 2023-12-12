@@ -3,6 +3,7 @@ package com.xiaoxi.apiPassenger.service;
 import com.xiaoxi.apiPassenger.romete.ServiceVerificationCodeClient;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
 import com.xiaoxi.interfaceCommon.response.NumberResponse;
+import com.xiaoxi.interfaceCommon.response.TokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -35,5 +36,20 @@ public class VerificationCodeService {
 
 
         return ResponseResult.success();
+    }
+
+    public ResponseResult verificationCodeCheck(String numberCode, String passengerPhone) {
+        //从redis中取验证码
+
+        //校验验证码
+
+        //判断用户是否已登录
+
+        //返回token
+
+        TokenResponse tokenResponse = new TokenResponse();
+        tokenResponse.setToken("token value");
+
+        return ResponseResult.success(tokenResponse);
     }
 }
