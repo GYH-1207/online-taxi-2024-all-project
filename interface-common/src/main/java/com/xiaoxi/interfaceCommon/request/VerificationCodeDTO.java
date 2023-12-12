@@ -1,4 +1,4 @@
-package com.xiaoxi.apiPassenger.request;
+package com.xiaoxi.interfaceCommon.request;
 
 import lombok.Data;
 

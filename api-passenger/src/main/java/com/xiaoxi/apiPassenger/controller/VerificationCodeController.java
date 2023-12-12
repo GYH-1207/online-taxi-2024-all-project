@@ -1,6 +1,6 @@
 package com.xiaoxi.apiPassenger.controller;
 
-import com.xiaoxi.apiPassenger.request.VerificationCodeDTO;
+import com.xiaoxi.interfaceCommon.request.VerificationCodeDTO;
 import com.xiaoxi.apiPassenger.service.VerificationCodeService;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
