@@ -1,23 +1,26 @@
 package com.xiaoxi.apiPassenger.service;
 
-import com.alibaba.fastjson.JSONObject;
+import com.xiaoxi.apiPassenger.romete.ServiceVerificationCodeClient;
+import com.xiaoxi.interfaceCommon.dto.ResponseResult;
+import com.xiaoxi.interfaceCommon.response.NumberResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class VerificationCodeService {
 
-    public String generateCode(String passengerPhone) {
-        System.out.println("调用验证码微服务");
+    @Autowired
+    private ServiceVerificationCodeClient serviceVerificationCodeClient;
 
-        String code = "1111";
+    public ResponseResult generateCode(String passengerPhone) {
+        System.out.println("调用验证码微服务");
+        ResponseResult<NumberResponse> numberCodeResponse = serviceVerificationCodeClient.getVerificationCode(6);
+
+        int numberCode = numberCodeResponse.getData().getNumberCode();
 
         System.out.println("手机号为" + passengerPhone);
-        System.out.println("验证码为" + code);
+        System.out.println("验证码为" + numberCode);
 
-        JSONObject json = new JSONObject();
-        json.put("code","200");
-        json.put("message","success");
-
-        return json.toJSONString();
+        return ResponseResult.success(numberCode);
     }
 }
