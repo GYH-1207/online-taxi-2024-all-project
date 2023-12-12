@@ -8,3 +8,8 @@ spring:
       discovery:
         server-addr: localhost:8848
         service: api-Passenger
+  redis:
+    host: 192.168.19.141
+    port: 6379
+    database: 0
+    password: redis

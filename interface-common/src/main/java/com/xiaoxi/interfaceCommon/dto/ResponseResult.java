@@ -13,6 +13,14 @@ public class ResponseResult<T> {
     private T data;
 
     /**
+     * 成功响应的方法
+     * @return
+     * @param <T>
+     */
+    public static <T> ResponseResult success() {
+        return new ResponseResult().setCode(CommonStatusEumn.SUCCESS.getCode()).setMessage(CommonStatusEumn.SUCCESS.getValue());
+    }
+    /**
      * 成功的响应方法
      * @param data
      * @return
