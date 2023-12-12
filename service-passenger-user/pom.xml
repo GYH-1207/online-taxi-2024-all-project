@@ -7,12 +7,13 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.xiaoxi.verificationCode</groupId>
-    <artifactId>service-verificationCode</artifactId>
+    <groupId>com.xiaoxi.servicePassengerUser</groupId>
+    <artifactId>service-passenger-user</artifactId>
     <packaging>jar</packaging>
 
-    <name>service-verificationCode</name>
+    <name>service-passenger-user</name>
     <url>http://maven.apache.org</url>
+
 
     <dependencies>
         <dependency>
@@ -21,20 +22,10 @@
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <!--  nacos注册中心-->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.xiaoxi.interfaceCommon</groupId>
-            <artifactId>interface-common</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
