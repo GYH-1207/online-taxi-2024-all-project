@@ -3,6 +3,7 @@ package com.xiaoxi.interfaceCommon.constant;
 import lombok.Getter;
 
 public enum CommonStatusEumn {
+    VERIFICATION_CODE_FAIL(1099,"验证码不正确"),
     /**
      * 成功
      */

@@ -1,6 +1,8 @@
 package com.xiaoxi.apiPassenger.service;
 
+import com.alibaba.cloud.commons.lang.StringUtils;
 import com.xiaoxi.apiPassenger.romete.ServiceVerificationCodeClient;
+import com.xiaoxi.interfaceCommon.constant.CommonStatusEumn;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
 import com.xiaoxi.interfaceCommon.response.NumberResponse;
 import com.xiaoxi.interfaceCommon.response.TokenResponse;
@@ -29,8 +31,9 @@ public class VerificationCodeService {
         System.out.println("手机号为" + passengerPhone);
         System.out.println("验证码为" + numberCode);
 
+        String key = generatePhoneToKey(passengerPhone);
         //存入redis
-        stringRedisTemplate.opsForValue().set(verificationCodePrefix + passengerPhone, numberCode + "", 2, TimeUnit.MINUTES);
+        stringRedisTemplate.opsForValue().set(key, numberCode + "", 2, TimeUnit.MINUTES);
 
         //通过短信服务商，将验证码发送到手机上
 
@@ -38,11 +41,24 @@ public class VerificationCodeService {
         return ResponseResult.success();
     }
 
+    private String generatePhoneToKey(String passengerPhone) {
+        return verificationCodePrefix + passengerPhone;
+    }
+
     public ResponseResult verificationCodeCheck(String numberCode, String passengerPhone) {
         //从redis中取验证码
+        String key = generatePhoneToKey(passengerPhone);
+        String redisNumberCode = stringRedisTemplate.opsForValue().get(key);
+
+        System.out.println("redis的验证码：" + redisNumberCode);
 
         //校验验证码
-
+        if(StringUtils.isBlank(redisNumberCode)) {
+            return ResponseResult.fail(CommonStatusEumn.VERIFICATION_CODE_FAIL.getCode(),CommonStatusEumn.VERIFICATION_CODE_FAIL.getValue());
+        }
+        if (!numberCode.trim().equals(redisNumberCode.trim())) {
+            return ResponseResult.fail(CommonStatusEumn.VERIFICATION_CODE_FAIL.getCode(), CommonStatusEumn.VERIFICATION_CODE_FAIL.getValue());
+        }
         //判断用户是否已登录
 
         //返回token
