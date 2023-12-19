@@ -1,9 +1,11 @@
 package com.xiaoxi.apiPassenger.service;
 
 import com.alibaba.cloud.commons.lang.StringUtils;
+import com.xiaoxi.apiPassenger.romete.ServicePassengerUserClient;
 import com.xiaoxi.apiPassenger.romete.ServiceVerificationCodeClient;
 import com.xiaoxi.interfaceCommon.constant.CommonStatusEumn;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
+import com.xiaoxi.interfaceCommon.request.VerificationCodeDTO;
 import com.xiaoxi.interfaceCommon.response.NumberResponse;
 import com.xiaoxi.interfaceCommon.response.TokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ public class VerificationCodeService {
 
     @Autowired
     private ServiceVerificationCodeClient serviceVerificationCodeClient;
+    @Autowired
+    private ServicePassengerUserClient servicePassengerUserClient;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
@@ -59,7 +63,10 @@ public class VerificationCodeService {
         if (!numberCode.trim().equals(redisNumberCode.trim())) {
             return ResponseResult.fail(CommonStatusEumn.VERIFICATION_CODE_FAIL.getCode(), CommonStatusEumn.VERIFICATION_CODE_FAIL.getValue());
         }
+        VerificationCodeDTO verificationCodeDTO = new VerificationCodeDTO();
+        verificationCodeDTO.setPassengerPhone(passengerPhone);
         //判断用户是否已登录
+        servicePassengerUserClient.logOrReg(verificationCodeDTO);
 
         //返回token
 
