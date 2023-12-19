@@ -4,10 +4,12 @@ import com.alibaba.cloud.commons.lang.StringUtils;
 import com.xiaoxi.apiPassenger.romete.ServicePassengerUserClient;
 import com.xiaoxi.apiPassenger.romete.ServiceVerificationCodeClient;
 import com.xiaoxi.interfaceCommon.constant.CommonStatusEumn;
+import com.xiaoxi.interfaceCommon.constant.IdentityConstant;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
 import com.xiaoxi.interfaceCommon.request.VerificationCodeDTO;
 import com.xiaoxi.interfaceCommon.response.NumberResponse;
 import com.xiaoxi.interfaceCommon.response.TokenResponse;
+import com.xiaoxi.interfaceCommon.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -69,9 +71,10 @@ public class VerificationCodeService {
         servicePassengerUserClient.logOrReg(verificationCodeDTO);
 
         //返回token
+        String token = JwtUtils.generateToken(passengerPhone, IdentityConstant.PASSENGER_IDENTITY);
 
         TokenResponse tokenResponse = new TokenResponse();
-        tokenResponse.setToken("token value");
+        tokenResponse.setToken(token);
 
         return ResponseResult.success(tokenResponse);
     }
