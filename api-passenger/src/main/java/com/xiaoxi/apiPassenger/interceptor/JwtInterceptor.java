@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.auth0.jwt.exceptions.AlgorithmMismatchException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.xiaoxi.interfaceCommon.constant.TokenConstants;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
 import com.xiaoxi.interfaceCommon.dto.TokenResult;
 import com.xiaoxi.interfaceCommon.util.JwtUtils;
@@ -57,7 +58,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             //获取TokenKey
             String phone = tokenResult.getPhone();
             String identity = tokenResult.getIdentity();
-            String tokenKey = RedisPrefixUtils.generateTokenKey(phone, identity);
+            String tokenKey = RedisPrefixUtils.generateTokenKey(phone, identity, TokenConstants.ACCESS_TOKEN_TYPE);
 
             //从redis里取token
             String tokenRedis = stringRedisTemplate.opsForValue().get(tokenKey);

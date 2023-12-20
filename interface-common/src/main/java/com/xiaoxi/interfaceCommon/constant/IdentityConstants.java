@@ -1,6 +1,9 @@
 package com.xiaoxi.interfaceCommon.constant;
 
-public class IdentityConstant {
+/**
+ * 用户身份常量
+ */
+public class IdentityConstants {
     //乘客身份
     public static final String PASSENGER_IDENTITY = "1";
 

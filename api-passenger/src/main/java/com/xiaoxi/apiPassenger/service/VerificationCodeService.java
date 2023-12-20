@@ -4,7 +4,8 @@ import com.alibaba.cloud.commons.lang.StringUtils;
 import com.xiaoxi.apiPassenger.romete.ServicePassengerUserClient;
 import com.xiaoxi.apiPassenger.romete.ServiceVerificationCodeClient;
 import com.xiaoxi.interfaceCommon.constant.CommonStatusEumn;
-import com.xiaoxi.interfaceCommon.constant.IdentityConstant;
+import com.xiaoxi.interfaceCommon.constant.IdentityConstants;
+import com.xiaoxi.interfaceCommon.constant.TokenConstants;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
 import com.xiaoxi.interfaceCommon.request.VerificationCodeDTO;
 import com.xiaoxi.interfaceCommon.response.NumberResponse;
@@ -66,15 +67,23 @@ public class VerificationCodeService {
         servicePassengerUserClient.logOrReg(verificationCodeDTO);
 
         //返回token
-        String token = JwtUtils.generateToken(passengerPhone, IdentityConstant.PASSENGER_IDENTITY);
+        String accessToken = JwtUtils.generateToken(passengerPhone, IdentityConstants.PASSENGER_IDENTITY, TokenConstants.ACCESS_TOKEN_TYPE);
+        String refreshToken = JwtUtils.generateToken(passengerPhone, IdentityConstants.PASSENGER_IDENTITY, TokenConstants.REFRESH_TOKEN_TYPE);
 
+        //双token策略
         //将token存入redis，防止有人盗用token，让服务端可以自己控制token的生存与否
-        String tokenKey = RedisPrefixUtils.generateTokenKey(passengerPhone,IdentityConstant.PASSENGER_IDENTITY);
-        stringRedisTemplate.opsForValue().set(tokenKey,token,30,TimeUnit.DAYS);
+        //存入accessToken
+        String accessTokenKey = RedisPrefixUtils.generateTokenKey(passengerPhone, IdentityConstants.PASSENGER_IDENTITY,TokenConstants.ACCESS_TOKEN_TYPE);
+        stringRedisTemplate.opsForValue().set(accessTokenKey,accessToken,30,TimeUnit.DAYS);
+
+        //存入refreshToken
+        String refreshTokenKey = RedisPrefixUtils.generateTokenKey(passengerPhone, IdentityConstants.PASSENGER_IDENTITY,TokenConstants.REFRESH_TOKEN_TYPE);
+        stringRedisTemplate.opsForValue().set(refreshTokenKey,refreshToken,31,TimeUnit.DAYS);
 
         //响应
         TokenResponse tokenResponse = new TokenResponse();
-        tokenResponse.setToken(token);
+        tokenResponse.setAccessToken(accessToken);
+        tokenResponse.setRefreshToken(refreshToken);
 
         return ResponseResult.success(tokenResponse);
     }
