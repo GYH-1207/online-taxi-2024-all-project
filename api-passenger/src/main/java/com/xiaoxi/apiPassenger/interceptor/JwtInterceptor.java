@@ -37,7 +37,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
 
         if(tokenResult == null) {
-            resultStr = "token invalid tokenResult is null";
+            resultStr = "access token invalid tokenResult is null";
             result = false;
         }else {
             //获取TokenKey
@@ -48,7 +48,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             //从redis里取token
             String tokenRedis = stringRedisTemplate.opsForValue().get(tokenKey);
             if((tokenRedis == null) || (!token.trim().equals(tokenRedis.trim()))) {
-                resultStr = "token invalid";
+                resultStr = "access token invalid";
                 result = false;
             }
         }

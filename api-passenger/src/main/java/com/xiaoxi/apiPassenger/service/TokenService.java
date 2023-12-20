@@ -50,6 +50,10 @@ public class TokenService {
         stringRedisTemplate.opsForValue().set(refreshTokenKey,refreshToken,31, TimeUnit.DAYS);
         stringRedisTemplate.opsForValue().set(accessTokenKey,accessToken,30,TimeUnit.DAYS);
 
+//        //测试，我改了过期时间
+//        stringRedisTemplate.opsForValue().set(refreshTokenKey,refreshToken,50, TimeUnit.SECONDS);
+//        stringRedisTemplate.opsForValue().set(accessTokenKey,accessToken,10,TimeUnit.SECONDS);
+
         //将双token响应回去
         TokenResponse tokenResponse = new TokenResponse();
         tokenResponse.setRefreshToken(refreshToken);
