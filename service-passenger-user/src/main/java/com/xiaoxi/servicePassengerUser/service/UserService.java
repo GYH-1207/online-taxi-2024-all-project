@@ -1,5 +1,6 @@
 package com.xiaoxi.servicePassengerUser.service;
 
+import com.xiaoxi.interfaceCommon.constant.CommonStatusEumn;
 import com.xiaoxi.interfaceCommon.dto.PassengerUser;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
 import com.xiaoxi.servicePassengerUser.mapper.PassengerUserMapper;
@@ -22,7 +23,7 @@ public class UserService {
         Map<String, Object> map = new HashMap<>();
         map.put("passenger_phone",passengerPhone);
         List<PassengerUser> passengerUsers = passengerUserMapper.selectByMap(map);
-        System.out.println(passengerUsers.size() == 0?"无记录":passengerUsers.get(0).getPassengerName());
+        System.out.println(passengerUsers.size() == 0?"无用户信息":passengerUsers.get(0).getPassengerName());
 
         //判断用户是否存在
         if(passengerUsers.size() == 0) {
@@ -38,10 +39,24 @@ public class UserService {
             passengerUserMapper.insert(passengerUser);
         }
 
-
-
         //登录
 
         return ResponseResult.success();
+    }
+
+    public ResponseResult getUserByPhone(String passengerPhone) {
+        System.out.println("查询用户信息");
+        //根据手机号查询用户信息
+        Map<String, Object> map = new HashMap<>();
+        map.put("passenger_phone",passengerPhone);
+        List<PassengerUser> passengerUsers = passengerUserMapper.selectByMap(map);
+
+        if(passengerUsers.size() == 0) {
+            return ResponseResult.fail(CommonStatusEumn.USER_NO_EXISTS.getCode(),CommonStatusEumn.USER_NO_EXISTS.getValue());
+        }
+
+        PassengerUser passengerUser = passengerUsers.get(0);
+
+        return ResponseResult.success(passengerUser);
     }
 }

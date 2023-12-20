@@ -19,6 +19,12 @@ public enum CommonStatusEumn {
     TOKEN_ERROR(1199,"token错误"),
 
     /**
+     * 用户
+     * 错误：1200-1299
+     */
+    USER_NO_EXISTS(1200,"用户不存在"),
+
+    /**
      * 成功
      */
     SUCCESS(200,"success"),
