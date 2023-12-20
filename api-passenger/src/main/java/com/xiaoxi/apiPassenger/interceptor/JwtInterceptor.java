@@ -33,23 +33,8 @@ public class JwtInterceptor implements HandlerInterceptor {
         //获取token
         String token = request.getHeader("Authorization");
 
-        TokenResult tokenResult = null;
-        try {
-            //解析token
-            tokenResult = JwtUtils.parseToken(token);
-        } catch (SignatureVerificationException e) {
-            resultStr = "token sign error";
-            result = false;
-        } catch (TokenExpiredException e) {
-            resultStr = "token time out";
-            result = false;
-        } catch (AlgorithmMismatchException e) {
-            resultStr = "token AlgorithmMismatchException";
-            result = false;
-        } catch (Exception e) {
-            resultStr = "token invalid";
-            result = false;
-        }
+        TokenResult tokenResult = JwtUtils.checkToken(token);
+
 
         if(tokenResult == null) {
             resultStr = "token invalid tokenResult is null";
@@ -62,15 +47,9 @@ public class JwtInterceptor implements HandlerInterceptor {
 
             //从redis里取token
             String tokenRedis = stringRedisTemplate.opsForValue().get(tokenKey);
-            if(tokenRedis == null) {
-                resultStr = "token invalid tokenRedis is null";
+            if((tokenRedis == null) || (!token.trim().equals(tokenRedis.trim()))) {
+                resultStr = "token invalid";
                 result = false;
-            }else {
-                //比较token
-                if(!token.trim().equals(tokenRedis.trim())) {
-                    resultStr = "token invalid, token inequality";
-                    result = false;
-                }
             }
         }
 
