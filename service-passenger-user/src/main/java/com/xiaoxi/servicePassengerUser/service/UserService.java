@@ -1,16 +1,14 @@
 package com.xiaoxi.servicePassengerUser.service;
 
+import com.xiaoxi.interfaceCommon.dto.PassengerUser;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
-import com.xiaoxi.servicePassengerUser.dto.PassengerUser;
 import com.xiaoxi.servicePassengerUser.mapper.PassengerUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Service
 public class UserService {
