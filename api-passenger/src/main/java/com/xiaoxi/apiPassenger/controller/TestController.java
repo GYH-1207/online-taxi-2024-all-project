@@ -11,11 +11,19 @@ public class TestController {
         return "api passenger test";
     }
 
+    /**
+     * 需要拦截验证的 测试controller
+     * @return
+     */
     @GetMapping("/authTest")
     public ResponseResult authTest() {
         return ResponseResult.success("auth test");
     }
 
+    /**
+     * 不需要拦截验证的 测试controller
+     * @return
+     */
     @GetMapping("/noAuthTest")
     public ResponseResult noAuthTest() {
         return ResponseResult.success("noAuth test");

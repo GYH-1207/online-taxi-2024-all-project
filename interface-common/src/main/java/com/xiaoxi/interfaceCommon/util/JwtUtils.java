@@ -35,8 +35,8 @@ public class JwtUtils {
                     builder.withClaim(k,v);
                 }
         );
-        //设置过期时间
-        builder.withExpiresAt(date);
+//        //设置过期时间
+//        builder.withExpiresAt(date);
         //生成token
         String token = builder.sign(Algorithm.HMAC256(SIGN));
 

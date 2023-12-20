@@ -15,6 +15,11 @@ public class VerificationCodeController {
     @Autowired
     private VerificationCodeService verificationCodeService;
 
+    /**
+     * 获取验证码
+     * @param verificationCodeDTO
+     * @return
+     */
     @GetMapping("/verification-code")
     public ResponseResult generateCode(@RequestBody VerificationCodeDTO verificationCodeDTO) {
         System.out.println("生成验证码");
@@ -23,6 +28,11 @@ public class VerificationCodeController {
         return verificationCodeService.generateCode(passengerPhone);
     }
 
+    /**
+     * 验证验证码，并登录
+     * @param verificationCodeDTO
+     * @return
+     */
     @PostMapping("/verification-code-check")
     public ResponseResult verificationCodeCheck(@RequestBody VerificationCodeDTO verificationCodeDTO) {
         String numberCode = verificationCodeDTO.getVerificationCode();
