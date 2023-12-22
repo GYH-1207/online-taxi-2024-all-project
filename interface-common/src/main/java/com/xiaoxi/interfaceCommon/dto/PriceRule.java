@@ -8,11 +8,11 @@ public class PriceRule {
 
     private String vehicleType;//车辆类型
 
-    private double startFare;//起步价
+    private Double startFare;//起步价
 
-    private int startMile;//起步里程
+    private Integer startMile;//起步里程
 
-    private double unitPricePerMile;//计程单价（按公里）
+    private Double unitPricePerMile;//计程单价（按公里）
 
-    private double unitPricePerMinute;//计程单价（按分钟）
+    private Double unitPricePerMinute;//计程单价（按分钟）
 }
