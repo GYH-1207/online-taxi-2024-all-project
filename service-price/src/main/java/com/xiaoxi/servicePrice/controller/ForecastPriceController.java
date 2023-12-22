@@ -15,6 +15,11 @@ public class ForecastPriceController {
     @Autowired
     private ForecastPrcieService forecastPrcieService;
 
+    /**
+     * 计算预估价格
+     * @param forecastPriceDTO
+     * @return
+     */
     @PostMapping("/forecast-price")
     public ResponseResult forecastPrice(@RequestBody ForecastPriceDTO forecastPriceDTO) {
         String depLongitude = forecastPriceDTO.getDepLongitude();

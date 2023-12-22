@@ -1,31 +1,33 @@
-package com.xiaoxi.apiPassenger.controller;
+package com.xiaoxi.serviceMap.controller;
 
-import com.xiaoxi.apiPassenger.service.ForecastPriceService;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
 import com.xiaoxi.interfaceCommon.request.ForecastPriceDTO;
+import com.xiaoxi.serviceMap.service.DirectionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class ForecastPriceController {
+@RequestMapping("/direction")
+public class DirectionController {
 
     @Autowired
-    private ForecastPriceService forecastPriceService;
+    private DirectionService directionService;
 
     /**
-     * 预估价格
+     * 根据起点经纬度和重点经纬度 获取 距离（单位：米）和时长（单位：分钟）
      * @param forecastPriceDTO
      * @return
      */
-    @PostMapping("/forecast-price")
-    public ResponseResult forecastPrice(@RequestBody ForecastPriceDTO forecastPriceDTO) {
+    @GetMapping("/driving")
+    public ResponseResult driving(@RequestBody ForecastPriceDTO forecastPriceDTO) {
         String depLongitude = forecastPriceDTO.getDepLongitude();
         String depLatitude = forecastPriceDTO.getDepLatitude();
         String destLongitude = forecastPriceDTO.getDestLongitude();
         String destLatitude = forecastPriceDTO.getDestLatitude();
 
-        return forecastPriceService.forecastPrice(depLongitude,depLatitude,destLongitude,destLatitude);
+        return directionService.driving(depLongitude,depLatitude,destLongitude,destLatitude);
     }
 }
