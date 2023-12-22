@@ -20,6 +20,7 @@
         <module>service-verificationCode</module>
         <module>interface-common</module>
         <module>service-passenger-user</module>
+        <module>service-price</module>
     </modules>
 
     <properties>
