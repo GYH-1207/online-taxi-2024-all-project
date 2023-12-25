@@ -13,9 +13,9 @@ public class DicDistrictController {
     private DicDistrictService dicDistrictService;
 
     @GetMapping("/dic-district")
-    public ResponseResult dicDistrict(String keywords) {
+    public ResponseResult initDicDistrict(String keywords) {
 
 
-        return dicDistrictService.dicDistrict(keywords);
+        return dicDistrictService.initDicDistrict(keywords);
     }
 }
