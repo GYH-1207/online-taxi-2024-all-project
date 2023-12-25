@@ -8,7 +8,11 @@ spring:
       discovery:
         server-addr: localhost:8848
         service: service-map
-
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/service-map?characterEncoding=utf-8&serverTimezone=GMT%2B8
+    username: root
+    password: gyh155222334
 # 自定义属性
 aMap:
   key: 161fa2b7db6f2a5190e16f4af097aca5

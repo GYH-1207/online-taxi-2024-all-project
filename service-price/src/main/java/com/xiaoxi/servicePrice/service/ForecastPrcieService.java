@@ -60,6 +60,7 @@ public class ForecastPrcieService {
 
         log.info("根据距离、时长和计价规则，计算价格");
         double price = getPrice(distance, duration, priceRule);
+        log.info("车费为："+price);
 
         //返回价格信息
         ForecastPriceResponse forecastPriceResponse = new ForecastPriceResponse();
