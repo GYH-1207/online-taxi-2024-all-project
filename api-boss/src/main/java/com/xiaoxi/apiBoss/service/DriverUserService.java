@@ -21,4 +21,14 @@ public class DriverUserService {
         //调用司机用户服务，添加用户
         return driverUserClient.addUser(driverUser);
     }
+
+    /**
+     * 录入要修改的司机用户信息
+     * @param driverUser
+     * @return
+     */
+    public ResponseResult updateUser(DriverUser driverUser) {
+        //调用司机用户服务，修改用户
+        return driverUserClient.updateUser(driverUser);
+    }
 }
