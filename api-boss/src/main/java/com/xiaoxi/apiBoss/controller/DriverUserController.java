@@ -1,30 +1,26 @@
-package com.xiaoxi.serviceDriverUser.controller;
+package com.xiaoxi.apiBoss.controller;
 
-import com.alibaba.fastjson2.JSONObject;
+import com.xiaoxi.apiBoss.service.DriverUserService;
 import com.xiaoxi.interfaceCommon.dto.DriverUser;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
-import com.xiaoxi.serviceDriverUser.service.DriverUserService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Slf4j
-public class UserController {
+public class DriverUserController {
 
     @Autowired
     private DriverUserService driverUserService;
 
     /**
-     * 插入司机用户信息
+     * 录入司机用户信息
      * @param driverUser
      * @return
      */
-    @PostMapping("/user")
+    @PostMapping("/driver-user")
     public ResponseResult addUser(@RequestBody DriverUser driverUser) {
-        log.info(JSONObject.toJSONString(driverUser));
         return driverUserService.addUser(driverUser);
     }
 }
