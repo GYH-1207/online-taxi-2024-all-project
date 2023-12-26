@@ -1,12 +1,10 @@
 package com.xiaoxi.interfaceCommon.dto;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotNull;
-
 import java.io.Serializable;
-
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.LocalDate;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
@@ -52,7 +50,7 @@ public class DriverUser implements Serializable {
     * 出生日期
     */
     @ApiModelProperty("出生日期")
-    private Date driverBirthday;
+    private LocalDate driverBirthday;
     /**
     * 驾驶员民族
     */
@@ -76,17 +74,17 @@ public class DriverUser implements Serializable {
     * 初次领取驾驶证日期
     */
     @ApiModelProperty("初次领取驾驶证日期")
-    private Date getDriverLicenseDate;
+    private LocalDate getDriverLicenseDate;
     /**
     * 驾驶证有效期限起
     */
     @ApiModelProperty("驾驶证有效期限起")
-    private Date driverLicenseOn;
+    private LocalDate driverLicenseOn;
     /**
     * 驾驶证有效期限止
     */
     @ApiModelProperty("驾驶证有效期限止")
-    private Date driverLicenseOff;
+    private LocalDate driverLicenseOff;
     /**
     * 是否巡游出租车汽车驾驶员 1：是，0：否
     */
@@ -110,27 +108,27 @@ public class DriverUser implements Serializable {
     * 资格证发证日期
     */
     @ApiModelProperty("资格证发证日期")
-    private Date networkCarIssueDate;
+    private LocalDate networkCarIssueDate;
     /**
     * 初次领取资格证日期
     */
     @ApiModelProperty("初次领取资格证日期")
-    private Date getNetworkCarProofDate;
+    private LocalDate getNetworkCarProofDate;
     /**
     * 资格证有效起始日期
     */
     @ApiModelProperty("资格证有效起始日期")
-    private Date networkCarProofOn;
+    private LocalDate networkCarProofOn;
     /**
     * 资格证有效截至日期
     */
     @ApiModelProperty("资格证有效截至日期")
-    private Date networkCarProofOff;
+    private LocalDate networkCarProofOff;
     /**
     * 报备日期
     */
     @ApiModelProperty("报备日期")
-    private Date registerDate;
+    private LocalDate registerDate;
     /**
     * 1：网络预约出租汽车，2：巡游出租汽车，3：私人小客车合乘
     */
@@ -147,12 +145,12 @@ public class DriverUser implements Serializable {
     * 合同有效期起
     */
     @ApiModelProperty("合同有效期起")
-    private Date contractOn;
+    private LocalDate contractOn;
     /**
     * 合同有效期止
     */
     @ApiModelProperty("合同有效期止")
-    private Date contractOff;
+    private LocalDate contractOff;
     /**
     * 司机状态 0：有效，1：失效
     */
@@ -162,10 +160,10 @@ public class DriverUser implements Serializable {
     * 创建时间
     */
     @ApiModelProperty("创建时间")
-    private Date gmtCreate;
+    private LocalDateTime gmtCreate;
     /**
     * 修改时间
     */
     @ApiModelProperty("修改时间")
-    private Date gmtModified;
+    private LocalDateTime gmtModified;
 }

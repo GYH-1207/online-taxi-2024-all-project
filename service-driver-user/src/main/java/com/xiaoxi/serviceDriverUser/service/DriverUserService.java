@@ -6,6 +6,8 @@ import com.xiaoxi.serviceDriverUser.mapper.DriverUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class DriverUserService {
 
@@ -15,5 +17,21 @@ public class DriverUserService {
     public ResponseResult testDB() {
         DriverUser driverUser = driverUserMapper.selectById(1);
         return ResponseResult.success(driverUser);
+    }
+
+    /**
+     * 插入司机用户信息
+     * @param driverUser
+     * @return
+     */
+    public ResponseResult addUser(DriverUser driverUser) {
+        //设置创建修改时间
+        LocalDateTime localDateTime = LocalDateTime.now();
+        driverUser.setGmtCreate(localDateTime);
+        driverUser.setGmtModified(localDateTime);
+
+        //插入数据库
+        driverUserMapper.insert(driverUser);
+        return ResponseResult.success();
     }
 }
