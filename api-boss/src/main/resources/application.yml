@@ -1,0 +1,10 @@
+server:
+  port: 8681
+spring:
+  application:
+    name: api-boss
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        service: api-boss
