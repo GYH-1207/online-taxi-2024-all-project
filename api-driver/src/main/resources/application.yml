@@ -1,0 +1,5 @@
+server:
+  port: 8781
+spring:
+  application:
+    name: api-driver
