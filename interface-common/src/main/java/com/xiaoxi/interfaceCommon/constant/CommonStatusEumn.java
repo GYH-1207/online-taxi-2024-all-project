@@ -31,6 +31,12 @@ public enum CommonStatusEumn {
     PRICE_RULE_EMPTY(1300,"计价规则不存在"),
 
     /**
+     * 行政区域
+     * 错误：1400-1499
+     */
+    MAP_DIC_DISTRICT_ERROR(1400,"请求地图错误"),
+
+    /**
      * 成功
      */
     SUCCESS(200,"success"),
