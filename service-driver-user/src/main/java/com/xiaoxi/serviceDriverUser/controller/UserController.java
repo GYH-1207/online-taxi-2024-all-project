@@ -7,6 +7,7 @@ import com.xiaoxi.serviceDriverUser.service.DriverUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,5 +27,16 @@ public class UserController {
     public ResponseResult addUser(@RequestBody DriverUser driverUser) {
         log.info(JSONObject.toJSONString(driverUser));
         return driverUserService.addUser(driverUser);
+    }
+
+    /**
+     * 修改用户信息
+     * @param driverUser
+     * @return
+     */
+    @PutMapping("/user")
+    public ResponseResult update(@RequestBody DriverUser driverUser) {
+        log.info(JSONObject.toJSONString(driverUser));
+        return driverUserService.updateUser(driverUser);
     }
 }

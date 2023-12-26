@@ -34,4 +34,19 @@ public class DriverUserService {
         driverUserMapper.insert(driverUser);
         return ResponseResult.success();
     }
+
+    /**
+     * 修改用户信息
+     * @param driverUser
+     * @return
+     */
+    public ResponseResult updateUser(DriverUser driverUser) {
+        //设置修改时间
+        LocalDateTime localDateTime = LocalDateTime.now();
+        driverUser.setGmtModified(localDateTime);
+
+        //修改数据源
+        driverUserMapper.updateById(driverUser);
+        return ResponseResult.success();
+    }
 }
