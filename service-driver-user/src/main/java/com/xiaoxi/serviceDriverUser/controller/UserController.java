@@ -1,15 +1,14 @@
 package com.xiaoxi.serviceDriverUser.controller;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.xiaoxi.interfaceCommon.constant.DriverCarConstants;
 import com.xiaoxi.interfaceCommon.dto.DriverUser;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
+import com.xiaoxi.interfaceCommon.response.DriverUserExistResponse;
 import com.xiaoxi.serviceDriverUser.service.DriverUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
@@ -38,5 +37,33 @@ public class UserController {
     public ResponseResult update(@RequestBody DriverUser driverUser) {
         log.info(JSONObject.toJSONString(driverUser));
         return driverUserService.updateUser(driverUser);
+    }
+
+    /**
+     * 根据手机号查询用户是否存在
+     * @param driverPhone
+     * @return
+     */
+    @GetMapping("/check-driver/{driverPhone}")
+    public ResponseResult<DriverUserExistResponse> checkDrive(@PathVariable("driverPhone") String driverPhone){
+        ResponseResult<DriverUser> userByDriverPhone = driverUserService.getUserByDriverPhone(driverPhone);
+        //司机用户
+        DriverUser driverUser = userByDriverPhone.getData();
+        int ifExists = DriverCarConstants.DRIVER_EXISTS;
+        DriverUserExistResponse driverUserExistResponse = new DriverUserExistResponse();
+        //用户不正确
+        if (driverUser == null) {
+            ifExists = DriverCarConstants.DRIVER_NOT_EXISTS;
+            driverUserExistResponse.setDriverPhone(driverPhone);
+            driverUserExistResponse.setIfExists(ifExists);
+            return ResponseResult.success(driverUserExistResponse);
+        }
+
+        //用户正确
+        String driverPhoneDB = driverUser.getDriverPhone();
+        driverUserExistResponse.setDriverPhone(driverPhoneDB);
+        driverUserExistResponse.setIfExists(ifExists);
+
+        return ResponseResult.success(driverUserExistResponse);
     }
 }
