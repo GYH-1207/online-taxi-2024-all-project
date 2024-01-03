@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 @FeignClient("service-driver-user")
-public interface DriverUserClient {
+public interface ServiceDriverUserClient {
     /**
      * 更新用户
      * @param driverUser
