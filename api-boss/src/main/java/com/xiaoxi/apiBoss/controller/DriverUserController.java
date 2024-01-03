@@ -1,6 +1,8 @@
 package com.xiaoxi.apiBoss.controller;
 
+import com.xiaoxi.apiBoss.service.CarService;
 import com.xiaoxi.apiBoss.service.DriverUserService;
+import com.xiaoxi.interfaceCommon.dto.Car;
 import com.xiaoxi.interfaceCommon.dto.DriverUser;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +35,18 @@ public class DriverUserController {
     @PutMapping("/driver-user")
     public ResponseResult updateUser(@RequestBody DriverUser driverUser) {
         return driverUserService.updateUser(driverUser);
+    }
+
+    @Autowired
+    private CarService carService;
+
+    /**
+     * 添加车辆信息
+     * @param car
+     * @return
+     */
+    @PostMapping("/car")
+    public ResponseResult addCar(@RequestBody Car car) {
+        return carService.addCar(car);
     }
 }

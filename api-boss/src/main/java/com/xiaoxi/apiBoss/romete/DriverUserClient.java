@@ -1,5 +1,6 @@
 package com.xiaoxi.apiBoss.romete;
 
+import com.xiaoxi.interfaceCommon.dto.Car;
 import com.xiaoxi.interfaceCommon.dto.DriverUser;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -14,4 +15,7 @@ public interface DriverUserClient {
 
     @PutMapping("/user")
     public ResponseResult updateUser(@RequestBody DriverUser driverUser);
+
+    @PostMapping("/car")
+    public ResponseResult addCar(@RequestBody Car car);
 }

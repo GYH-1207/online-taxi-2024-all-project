@@ -44,7 +44,7 @@ public class DicDistrictService {
             return ResponseResult.fail(CommonStatusEumn.MAP_DIC_DISTRICT_ERROR.getCode(),CommonStatusEumn.MAP_DIC_DISTRICT_ERROR.getValue());
         }
 
-        JSONArray districts = districtJsonObject.getJSONArray("districts");
+        JSONArray districts = districtJsonObject.getJSONArray(AMapConfigConstants.DISTRICTS);
         //递归调用返回结果
         List<DicDistrict> ans = new ArrayList<>();
         parseDistricts(districts,ans,"0",new HashSet<>());
@@ -66,9 +66,9 @@ public class DicDistrictService {
         for(int i = 0;i < districts.size();i++) {
             //这一层的信息
             JSONObject jsonObject = districts.getJSONObject(i);
-            String addressCode = jsonObject.getString("adcode");
-            String addressName = jsonObject.getString("name");
-            String level = jsonObject.getString("level");
+            String addressCode = jsonObject.getString(AMapConfigConstants.ADCODE);
+            String addressName = jsonObject.getString(AMapConfigConstants.NAME);
+            String level = jsonObject.getString(AMapConfigConstants.LEVEL);
             //存储信息
             DicDistrict dicDistrict = new DicDistrict();
             dicDistrict.setAddressCode(addressCode);
@@ -79,7 +79,7 @@ public class DicDistrictService {
                 hash.add(addressCode);
                 ans.add(dicDistrict);
             }
-            parseDistricts(jsonObject.getJSONArray("districts"),ans,addressCode,hash);
+            parseDistricts(jsonObject.getJSONArray(AMapConfigConstants.DISTRICTS),ans,addressCode,hash);
         }
     }
 

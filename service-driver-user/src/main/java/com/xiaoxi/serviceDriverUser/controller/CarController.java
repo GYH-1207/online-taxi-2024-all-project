@@ -1,20 +1,29 @@
 package com.xiaoxi.serviceDriverUser.controller;
 
+import com.xiaoxi.interfaceCommon.dto.Car;
+import com.xiaoxi.interfaceCommon.dto.ResponseResult;
+import com.xiaoxi.serviceDriverUser.service.CarService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import java.time.LocalDateTime;
 
-import org.springframework.stereotype.Controller;
-
-/**
- * <p>
- *  前端控制器
- * </p>
- *
- * @author 小汐
- * @since 2023-12-26
- */
-@Controller
-@RequestMapping("/car")
+@RestController
 public class CarController {
+
+    @Autowired
+    private CarService carService;
+
+    /**
+     * 插入车辆信息
+     * @param car
+     * @return
+     */
+    @PostMapping("/car")
+    public ResponseResult addCar(@RequestBody Car car) {
+        return carService.addCar(car);
+    }
 
 }
