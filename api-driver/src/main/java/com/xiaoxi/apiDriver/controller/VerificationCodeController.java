@@ -1,0 +1,32 @@
+package com.xiaoxi.apiDriver.controller;
+
+import com.xiaoxi.apiDriver.service.VerificationCodeService;
+import com.xiaoxi.interfaceCommon.dto.ResponseResult;
+import com.xiaoxi.interfaceCommon.request.VerificationCodeDTO;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@Slf4j
+public class VerificationCodeController {
+
+    @Autowired
+    private VerificationCodeService verificationCodeService;
+
+    /**
+     * 检查用户是否存在，并向 验证码服务 请求验证码
+     * @param verificationCodeDTO
+     * @return
+     */
+    @GetMapping("/verification-code")
+    public ResponseResult verificationCode(@RequestBody VerificationCodeDTO verificationCodeDTO) {
+        String driverPhone = verificationCodeDTO.getDriverPhone();
+        log.info("司机的手机号："+driverPhone);
+        //执行业务
+        return verificationCodeService.checkAndSendVerificationCode(driverPhone);
+    }
+}

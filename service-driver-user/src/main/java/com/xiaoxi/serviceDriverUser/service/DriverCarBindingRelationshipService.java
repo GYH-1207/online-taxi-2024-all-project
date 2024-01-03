@@ -54,6 +54,26 @@ public class DriverCarBindingRelationshipService {
             return ResponseResult.fail(CommonStatusEumn.CAR_BIND_EXISTS.getCode(),CommonStatusEumn.CAR_BIND_EXISTS.getValue());
         }
 
+        //可以绑定，但是这条记录数据库中有，只需修改状态值即可，无需添加
+        Map<String,Object> queryMap = new HashMap<>();
+        queryWrapper.eq("driver_id",driverCarBindingRelationship.getDriverId());
+        queryWrapper.eq("car_id",driverCarBindingRelationship.getCarId());
+        queryWrapper.eq("bind_state",DriverCarConstants.DRIVER_CAR_UN_BING);
+        List<DriverCarBindingRelationship> driverCarBindingRelationships = driverCarBindingRelationshipMapper.selectByMap(queryMap);
+        if(!driverCarBindingRelationships.isEmpty()) {
+            Long id = driverCarBindingRelationships.get(0).getId();
+            //设置要修改的id
+            driverCarBindingRelationship.setId(id);
+            //设置绑定时间
+            LocalDateTime now = LocalDateTime.now();
+            driverCarBindingRelationship.setBindingTime(now);
+            //设置绑定状态
+            driverCarBindingRelationship.setBindState(DriverCarConstants.DRIVER_CAR_BING);
+            driverCarBindingRelationshipMapper.updateById(driverCarBindingRelationship);
+            return ResponseResult.success();
+        }
+
+        //数据库中无记录，则继续添加操作
         //设置绑定时间
         LocalDateTime now = LocalDateTime.now();
         driverCarBindingRelationship.setBindingTime(now);
