@@ -1,6 +1,7 @@
 package com.xiaoxi.apiBoss.romete;
 
 import com.xiaoxi.interfaceCommon.dto.Car;
+import com.xiaoxi.interfaceCommon.dto.DriverCarBindingRelationship;
 import com.xiaoxi.interfaceCommon.dto.DriverUser;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -18,4 +19,10 @@ public interface DriverUserClient {
 
     @PostMapping("/car")
     public ResponseResult addCar(@RequestBody Car car);
+
+    @PostMapping("/driver-car-binding-relationship/bind")
+    public ResponseResult bind(DriverCarBindingRelationship driverCarBindingRelationship);
+
+    @PostMapping("/driver-car-binding-relationship/unbind")
+    public ResponseResult unbind(DriverCarBindingRelationship driverCarBindingRelationship);
 }
