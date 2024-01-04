@@ -32,6 +32,11 @@ public class AMapConfigConstants {
     public static final String TRACK_POINT_UPLOAD = "https://tsapi.amap.com/v1/track/point/upload" ;
 
     /**
+     * 猎鹰轨迹服务 周边搜索终端请求首地址
+     */
+    public static final String TRACK_TERMINAL_AROUND_SEARCH = "https://tsapi.amap.com/v1/track/terminal/aroundsearch";
+
+    /**
      * 解析路径 key
      */
     public static final String STATUS = "status";

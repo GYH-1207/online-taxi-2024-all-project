@@ -6,6 +6,8 @@ import com.xiaoxi.serviceMap.romete.TerminalClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TerminalService {
 
@@ -14,5 +16,9 @@ public class TerminalService {
 
     public ResponseResult<TerminalResponse> addTerminal(String name,String desc) {
         return terminalClient.addTerminal(name,desc);
+    }
+
+    public ResponseResult<List<TerminalResponse>> aroundSearch(String center, String radius) {
+        return terminalClient.aroundSearch(center,radius);
     }
 }
