@@ -17,6 +17,11 @@ public class AMapConfigConstants {
     public static final String TRACK_SERVICE_ADD = "https://tsapi.amap.com/v1/track/service/add";
 
     /**
+     * 猎鹰轨迹服务 添加终端地址
+     */
+    public static final String TRACK_TERMINAL_ADD = "https://tsapi.amap.com/v1/track/terminal/add";
+
+    /**
      * 解析路径 key
      */
     public static final String STATUS = "status";

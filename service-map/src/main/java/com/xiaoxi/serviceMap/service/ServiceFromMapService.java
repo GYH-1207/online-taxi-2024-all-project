@@ -1,7 +1,7 @@
 package com.xiaoxi.serviceMap.service;
 
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
-import com.xiaoxi.serviceMap.romete.ServiceFromMapClient;
+import com.xiaoxi.serviceMap.romete.ServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class ServiceFromMapService {
 
     @Autowired
-    private ServiceFromMapClient serviceFromMapClient;
+    private ServiceClient serviceFromMapClient;
 
     /**
      * 创建服务
