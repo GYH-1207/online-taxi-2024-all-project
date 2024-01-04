@@ -23,7 +23,7 @@ public class TerminalClient {
     @Autowired
     private RestTemplate restTemplate;
 
-    public ResponseResult addTerminal(String name) {
+    public ResponseResult<TerminalResponse> addTerminal(String name) {
         //拼接url
         StringBuilder url = new StringBuilder();
         url.append(AMapConfigConstants.TRACK_TERMINAL_ADD);

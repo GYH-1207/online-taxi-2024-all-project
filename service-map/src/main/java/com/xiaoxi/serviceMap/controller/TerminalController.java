@@ -1,6 +1,7 @@
 package com.xiaoxi.serviceMap.controller;
 
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
+import com.xiaoxi.interfaceCommon.response.TerminalResponse;
 import com.xiaoxi.serviceMap.service.TerminalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,7 @@ public class TerminalController {
     private TerminalService terminalService;
 
     @PostMapping("/add")
-    public ResponseResult add(String name) {
+    public ResponseResult<TerminalResponse> add(String name) {
         return terminalService.addTerminal(name);
     }
 }

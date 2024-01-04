@@ -7,6 +7,7 @@ import com.xiaoxi.interfaceCommon.dto.DriverUserWorkStatus;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
 import com.xiaoxi.serviceDriverUser.mapper.DriverUserMapper;
 import com.xiaoxi.serviceDriverUser.mapper.DriverUserWorkStatusMapper;
+import com.xiaoxi.serviceDriverUser.remote.ServiceMapClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
