@@ -12,7 +12,7 @@ public class TerminalService {
     @Autowired
     private TerminalClient terminalClient;
 
-    public ResponseResult<TerminalResponse> addTerminal(String name) {
-        return terminalClient.addTerminal(name);
+    public ResponseResult<TerminalResponse> addTerminal(String name,String desc) {
+        return terminalClient.addTerminal(name,desc);
     }
 }
