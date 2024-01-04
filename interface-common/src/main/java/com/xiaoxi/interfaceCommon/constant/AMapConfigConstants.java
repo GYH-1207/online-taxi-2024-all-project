@@ -12,6 +12,11 @@ public class AMapConfigConstants {
     public static final String DIC_DISTRICT_URL = "https://restapi.amap.com/v3/config/district";
 
     /**
+     * 猎鹰轨迹服务 添加服务地址
+     */
+    public static final String TRACK_SERVICE_ADD = "https://tsapi.amap.com/v1/track/service/add";
+
+    /**
      * 解析路径 key
      */
     public static final String STATUS = "status";

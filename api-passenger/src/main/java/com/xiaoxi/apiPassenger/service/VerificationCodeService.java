@@ -28,6 +28,11 @@ public class VerificationCodeService {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    /**
+     * 生成验证码
+     * @param passengerPhone
+     * @return
+     */
     public ResponseResult generateCode(String passengerPhone) {
         System.out.println("调用验证码微服务");
         ResponseResult<NumberResponse> numberCodeResponse = serviceVerificationCodeClient.getVerificationCode(6);
@@ -47,6 +52,12 @@ public class VerificationCodeService {
         return ResponseResult.success();
     }
 
+    /**
+     * 登录验证码校验
+     * @param numberCode
+     * @param passengerPhone
+     * @return
+     */
     public ResponseResult verificationCodeCheck(String numberCode, String passengerPhone) {
         //从redis中取验证码
         String key = RedisPrefixUtils.generatePhoneToKey(passengerPhone,IdentityConstants.PASSENGER_IDENTITY);

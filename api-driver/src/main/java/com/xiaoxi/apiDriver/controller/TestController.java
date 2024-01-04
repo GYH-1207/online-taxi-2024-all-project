@@ -10,4 +10,14 @@ public class TestController {
     public String test() {
         return "api-driver test";
     }
+
+    @GetMapping("/auth")
+    public String auth() {
+        return "auth";
+    }
+
+    @GetMapping("/noAuth")
+    public String noAuth() {
+        return "noAuth";
+    }
 }

@@ -3,8 +3,10 @@ package com.xiaoxi.serviceDriverUser.service;
 import com.xiaoxi.interfaceCommon.constant.CommonStatusEumn;
 import com.xiaoxi.interfaceCommon.constant.DriverCarConstants;
 import com.xiaoxi.interfaceCommon.dto.DriverUser;
+import com.xiaoxi.interfaceCommon.dto.DriverUserWorkStatus;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
 import com.xiaoxi.serviceDriverUser.mapper.DriverUserMapper;
+import com.xiaoxi.serviceDriverUser.mapper.DriverUserWorkStatusMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,9 @@ public class DriverUserService {
 
     @Autowired
     private DriverUserMapper driverUserMapper;
+
+    @Autowired
+    private DriverUserWorkStatusMapper driverUserWorkStatusMapper;
 
     public ResponseResult testDB() {
         DriverUser driverUser = driverUserMapper.selectById(1);
@@ -37,6 +42,15 @@ public class DriverUserService {
 
         //插入数据库
         driverUserMapper.insert(driverUser);
+
+        //添加司机工作状态
+        DriverUserWorkStatus driverUserWorkStatus = new DriverUserWorkStatus();
+        driverUserWorkStatus.setDriverId(driverUser.getId());
+        driverUserWorkStatus.setWorkStatus(DriverCarConstants.DRIVER_USER_WORK_STATUS_STOP);
+        driverUserWorkStatus.setGmtCreate(localDateTime);
+        driverUserWorkStatus.setGmtModified(localDateTime);
+        driverUserWorkStatusMapper.insert(driverUserWorkStatus);
+
         return ResponseResult.success();
     }
 

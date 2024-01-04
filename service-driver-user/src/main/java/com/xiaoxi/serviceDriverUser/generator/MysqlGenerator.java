@@ -19,7 +19,7 @@ public class MysqlGenerator {
                             "D:\\data\\马士兵\\网约车\\代码\\online-taxi-2023-myself\\service-driver-user\\src\\main\\java\\com\\xiaoxi\\serviceDriverUser\\mapper"));
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("driver_car_binding_relationship");
+                    builder.addInclude("driver_user_work_status");
                 })
                 .templateEngine(new FreemarkerTemplateEngine())
                 .execute();
