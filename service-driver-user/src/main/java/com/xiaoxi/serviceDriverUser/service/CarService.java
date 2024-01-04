@@ -30,7 +30,7 @@ public class CarService {
         car.setGmtCreate(now);
         car.setGmtModified(now);
 
-        //调用service-map服务获取终端id
+        //调用service-map服务获取终端id：tid
         ResponseResult<TerminalResponse> result = serviceMapClient.add(car.getVehicleNo());
         String tid = result.getData().getTid();
         car.setTid(tid);
