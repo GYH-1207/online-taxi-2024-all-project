@@ -1,5 +1,6 @@
 package com.xiaoxi.apiDriver.romete;
 
+import com.xiaoxi.interfaceCommon.dto.Car;
 import com.xiaoxi.interfaceCommon.dto.DriverUser;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
 import com.xiaoxi.interfaceCommon.response.DriverUserExistResponse;
@@ -21,4 +22,12 @@ public interface ServiceDriverUserClient {
      */
     @GetMapping("/check-driver/{driverPhone}")
     public ResponseResult<DriverUserExistResponse> checkDrive(@PathVariable("driverPhone") String driverPhone);
+
+    /**
+     * 根据carId查询车辆信息
+     * @param carId
+     * @return
+     */
+    @GetMapping("/car/{carId}")
+    public ResponseResult<Car> getCar(@PathVariable("carId") Long carId);
 }
