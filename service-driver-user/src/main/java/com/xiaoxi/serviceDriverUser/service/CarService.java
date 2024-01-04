@@ -3,6 +3,7 @@ package com.xiaoxi.serviceDriverUser.service;
 import com.xiaoxi.interfaceCommon.dto.Car;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
 import com.xiaoxi.interfaceCommon.response.TerminalResponse;
+import com.xiaoxi.interfaceCommon.response.TrackResponse;
 import com.xiaoxi.serviceDriverUser.mapper.CarMapper;
 import com.xiaoxi.serviceDriverUser.remote.ServiceMapClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,17 @@ public class CarService {
         car.setGmtCreate(now);
         car.setGmtModified(now);
 
-        //调用service-map服务获取终端id：tid
-        ResponseResult<TerminalResponse> result = serviceMapClient.add(car.getVehicleNo());
-        String tid = result.getData().getTid();
+        //调用service-map服务 创建并获取终端id：tid
+        ResponseResult<TerminalResponse> terminalResult = serviceMapClient.addTerminal(car.getVehicleNo());
+        String tid = terminalResult.getData().getTid();
         car.setTid(tid);
+
+        //调用service-map服务 创建并获取轨迹id：trid
+        ResponseResult<TrackResponse> trackResult = serviceMapClient.addTrack(tid);
+        String trid = trackResult.getData().getTrid();
+        String trname = trackResult.getData().getTrname();
+        car.setTrid(trid);
+        car.setTrname(trname);
 
         //添加车辆
         carMapper.insert(car);
