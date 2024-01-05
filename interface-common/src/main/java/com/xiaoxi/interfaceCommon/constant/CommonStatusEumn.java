@@ -30,6 +30,10 @@ public enum CommonStatusEumn {
      */
     PRICE_RULE_EMPTY(1300,"计价规则不存在"),
 
+    PRICE_RULE_EXIST(1301,"计价规则已存在，不允许继续添加"),
+
+    PRICE_RULE_NOT_EDIT(1302,"传入的计价规则没有变化"),
+
     /**
      * 行政区域
      * 错误：1400-1499

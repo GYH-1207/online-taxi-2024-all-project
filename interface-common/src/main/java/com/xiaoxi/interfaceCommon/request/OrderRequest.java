@@ -7,6 +7,10 @@ import java.time.LocalDateTime;
 
 @Data
 public class OrderRequest {
+    //乘客ID
+    private Long passengerId;
+    //乘客手机号
+    private String passengerPhone;
     //城市编码
     private String address;
     //预计用车时间
@@ -31,4 +35,6 @@ public class OrderRequest {
     private Integer encrypt;
     //运价类型编码
     private String fareType;
+    //运价类型版本
+    private Integer fareVersion;
 }
