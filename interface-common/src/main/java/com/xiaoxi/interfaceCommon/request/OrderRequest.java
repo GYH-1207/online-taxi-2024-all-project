@@ -29,4 +29,6 @@ public class OrderRequest {
     private String destLatitude;
     //坐标加密标识：1:GCJ-02 2:WGS84 3:BD-09 4:CGCS2000北斗 0:其他
     private Integer encrypt;
+    //运价类型编码
+    private String fareType;
 }
