@@ -32,13 +32,9 @@ public class ForecastPriceService {
         forecastPriceDTO.setCityCode(cityCode);
         forecastPriceDTO.setVehicleType(vehicleType);
         ResponseResult<ForecastPriceResponse> forecastPriceResult = servicePriceClient.forecastPrice(forecastPriceDTO);
-        double price = forecastPriceResult.getData().getPrice();
 
         //返回价格信息
-        ForecastPriceResponse forecastPriceResponse = new ForecastPriceResponse();
-        forecastPriceResponse.setPrice(price);
-        forecastPriceResponse.setCityCode(cityCode);
-        forecastPriceResponse.setVehicleType(vehicleType);
+        ForecastPriceResponse forecastPriceResponse = forecastPriceResult.getData();
         return ResponseResult.success(forecastPriceResponse);
     }
 }
