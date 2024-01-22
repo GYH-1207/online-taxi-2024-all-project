@@ -34,6 +34,8 @@ public enum CommonStatusEumn {
 
     PRICE_RULE_NOT_EDIT(1302,"传入的计价规则没有变化"),
 
+    PRICE_RULE_CHANGE(1303,"计价规则已经改变，请使用最新的计价规则"),
+
     /**
      * 行政区域
      * 错误：1400-1499
