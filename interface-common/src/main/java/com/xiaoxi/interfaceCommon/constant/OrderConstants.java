@@ -4,6 +4,8 @@ public class OrderConstants {
     /**
      * 订单状态常量
      */
+    public static final int ORDER_INVALID = 0; //0：订单无效
+
     public static final int ORDER_START = 1; //1：订单开始
 
     public static final int DRIVER_RECEIVE_ORDER = 2; //2：司机接单
