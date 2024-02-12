@@ -55,4 +55,9 @@ public class PriceRuleController {
     public ResponseResult<Boolean> isNew(@RequestParam String fareType,@RequestParam Integer fareVersion) {
         return priceRuleService.isNew(fareType,fareVersion);
     }
+
+    @GetMapping("/if-exists")
+    public ResponseResult<Boolean> isExists(@RequestBody PriceRule priceRule) {
+        return priceRuleService.isExists(priceRule);
+    }
 }
