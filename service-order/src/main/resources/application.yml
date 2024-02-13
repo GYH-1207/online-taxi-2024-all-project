@@ -14,7 +14,7 @@ spring:
         server-addr: localhost:8848
         service: service-order
   redis:
-    host: 192.168.19.151
+    host: 127.0.0.1
     port: 6379
     database: 0
     password: redis

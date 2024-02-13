@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xiaoxi.interfaceCommon.constant.CommonStatusEumn;
 import com.xiaoxi.interfaceCommon.constant.OrderConstants;
 import com.xiaoxi.interfaceCommon.dto.OrderInfo;
+import com.xiaoxi.interfaceCommon.dto.PriceRule;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
 import com.xiaoxi.interfaceCommon.request.OrderRequest;
 import com.xiaoxi.interfaceCommon.util.RedisPrefixUtils;
@@ -53,23 +54,26 @@ public class OrderInfoService {
     public ResponseResult add(OrderRequest orderRequest) {
         //查看计价规则是否为最新
         ResponseResult<Boolean> isNew = servicePriceClient.isNew(orderRequest.getFareType(), orderRequest.getFareVersion());
-        //计价规则不存在
-        if(isNew.getData() == null) {
-            return ResponseResult.fail(CommonStatusEumn.PRICE_RULE_EMPTY.getCode(),CommonStatusEumn.PRICE_RULE_EMPTY.getValue());
-        }
+//        //计价规则不存在
+//        if(isNew.getData() == null) {
+//            return ResponseResult.fail(CommonStatusEumn.PRICE_RULE_EMPTY.getCode(),CommonStatusEumn.PRICE_RULE_EMPTY.getValue());
+//        }
         //是否为最新
-        if(!isNew.getData()) {
-            return ResponseResult.fail(CommonStatusEumn.PRICE_RULE_CHANGE.getCode(),CommonStatusEumn.PRICE_RULE_CHANGE.getValue());
-        }
+//        if(!isNew.getData()) {
+//            return ResponseResult.fail(CommonStatusEumn.PRICE_RULE_CHANGE.getCode(),CommonStatusEumn.PRICE_RULE_CHANGE.getValue());
+//        }
 
-        //判断下定单次数一小时内是否超过2次
-        String deviceCode = orderRequest.getDeviceCode();
-        boolean isDeviceBlack = isDeviceBlack(deviceCode);
+        //判断下定单次数一小时内是否超过2次 黑名单
+        boolean isDeviceBlack = isDeviceBlack(orderRequest);
         //超过了直接返回
         if(isDeviceBlack) {
             return ResponseResult.fail(CommonStatusEumn.DEVICE_IS_BLACK.getCode(),CommonStatusEumn.DEVICE_IS_BLACK.getValue());
         }
 
+        //下单的城市和计价规则是否正常
+        if(!isPriceRuleExists(orderRequest)) {
+            return ResponseResult.fail(CommonStatusEumn.CITY_SERVICE_NO_SERVICE.getCode(),CommonStatusEumn.CITY_SERVICE_NO_SERVICE.getValue());
+        }
 
         //判断是否有订单正在进行
         Long passengerId = orderRequest.getPassengerId();
@@ -100,7 +104,7 @@ public class OrderInfoService {
      * @param passengerId
      * @return
      */
-    public Integer isUnderway(Long passengerId) {
+    private Integer isUnderway(Long passengerId) {
         //判断有订单正在进行不允许下单
         QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("passenger_id",passengerId);
@@ -122,7 +126,8 @@ public class OrderInfoService {
      * @param deviceCode
      * @return
      */
-    public boolean isDeviceBlack(String deviceCode) {
+    private boolean isDeviceBlack(OrderRequest orderRequest) {
+        String deviceCode = orderRequest.getDeviceCode();
         //判断下定单次数一小时内是否超过2次
         String deviceCodeKey = RedisPrefixUtils.generateDeviceCodeKey(deviceCode);
         Boolean isExist = stringRedisTemplate.hasKey(deviceCodeKey);
@@ -138,5 +143,19 @@ public class OrderInfoService {
             stringRedisTemplate.opsForValue().set(deviceCodeKey,"1",1L, TimeUnit.HOURS);
         }
         return false;
+    }
+
+    private boolean isPriceRuleExists(OrderRequest orderRequest) {
+        String fareType = orderRequest.getFareType();
+        int index = fareType.indexOf("$");
+        String cityCode = fareType.substring(0, index);
+        String vehicleType = fareType.substring(index + 1);
+
+        PriceRule priceRule = new PriceRule();
+        priceRule.setCityCode(cityCode);
+        priceRule.setVehicleType(vehicleType);
+        ResponseResult<Boolean> priceRuleExists = servicePriceClient.isPriceRuleExists(priceRule);
+
+        return priceRuleExists.getData();
     }
 }

@@ -56,7 +56,12 @@ public class PriceRuleController {
         return priceRuleService.isNew(fareType,fareVersion);
     }
 
-    @GetMapping("/if-exists")
+    /**
+     * 根据城市编码和车型查询计价规则是否存在
+     * @param priceRule
+     * @return
+     */
+    @PostMapping("/if-exists")
     public ResponseResult<Boolean> isExists(@RequestBody PriceRule priceRule) {
         return priceRuleService.isExists(priceRule);
     }

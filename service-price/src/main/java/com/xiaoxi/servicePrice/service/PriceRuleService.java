@@ -118,7 +118,8 @@ public class PriceRuleService {
         ResponseResult<PriceRule> newestPriceRule = getNewestPriceRule(fareType);
         //计价规则不存在
         if(newestPriceRule.getCode() == CommonStatusEumn.PRICE_RULE_EMPTY.getCode()) {
-            return ResponseResult.fail(CommonStatusEumn.PRICE_RULE_EMPTY.getCode(),CommonStatusEumn.PRICE_RULE_EMPTY.getValue());
+//            return ResponseResult.fail(CommonStatusEumn.PRICE_RULE_EMPTY.getCode(),CommonStatusEumn.PRICE_RULE_EMPTY.getValue());
+            return ResponseResult.fail(false);
         }
 
         //判断计价规则是否最新
@@ -130,6 +131,11 @@ public class PriceRuleService {
         return ResponseResult.success(true);
     }
 
+    /**
+     * 根据城市编码和车型查询计价规则是否存在
+     * @param priceRule
+     * @return
+     */
     public ResponseResult<Boolean> isExists(PriceRule priceRule) {
         String cityCode = priceRule.getCityCode();
         String vehicleType = priceRule.getVehicleType();

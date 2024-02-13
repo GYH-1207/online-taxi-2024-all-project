@@ -65,6 +65,10 @@ public enum CommonStatusEumn {
      */
     DEVICE_IS_BLACK(1601,"该设备超过允许下单次数"),
 
+    /**
+     * 城市未开通叫车服务
+     */
+    CITY_SERVICE_NO_SERVICE(1602,"当前城市不提供叫车服务"),
 
     /**
      * 成功
