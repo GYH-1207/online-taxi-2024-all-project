@@ -86,18 +86,28 @@ public class VerificationCodeService {
             return ResponseResult.fail(CommonStatusEumn.VERIFICATION_CODE_FAIL.getCode(), CommonStatusEumn.VERIFICATION_CODE_FAIL.getValue());
         }
 
-        //返回token
+        //生成 返回的token
         String accessToken = JwtUtils.generateToken(driverPhone, IdentityConstants.DRIVER_IDENTITY, TokenConstants.ACCESS_TOKEN_TYPE);
         String refreshToken = JwtUtils.generateToken(driverPhone, IdentityConstants.DRIVER_IDENTITY, TokenConstants.REFRESH_TOKEN_TYPE);
 
-        //双token策略
-        //将token存入redis，防止有人盗用token，让服务端可以自己控制token的生存与否
-        //存入accessToken
+        //生成 返回token的 key
         String accessTokenKey = RedisPrefixUtils.generateTokenKey(driverPhone, IdentityConstants.DRIVER_IDENTITY,TokenConstants.ACCESS_TOKEN_TYPE);
-        stringRedisTemplate.opsForValue().set(accessTokenKey,accessToken,30,TimeUnit.DAYS);
-
-        //存入refreshToken
         String refreshTokenKey = RedisPrefixUtils.generateTokenKey(driverPhone, IdentityConstants.DRIVER_IDENTITY,TokenConstants.REFRESH_TOKEN_TYPE);
+
+        /**
+         * 双token策略：
+         *    1.给用户发两个token：accessToken 和 refreshToken，refreshToken的过期时间比accessToken长一些，
+         *      如果是活跃用户，accessToken在一点时间过期了，但是refreshToken没有过期，则可以用refreshToken调用后端接口刷新重新获得两个token，
+         *      并重新设置过期时间。
+         *    2.如果不是活跃用户，那么accessToken过期后，这个用户可能还没登录，直到refreshToken也过期了，那他就没法刷新了，对于非活跃用户，我们希望
+         *      他下次访问时重新登录。
+         *    3.把token存入redis，是为了后端的安全性。如果有人盗用一个refreshToken的话，那他将可以没有顾及的无限访问我们的后端服务器，如果是有恶意的用户，
+         *      那么将会又不好的后果。
+         *      但是如果我们将token存入redis，那当我们发现token被恶意盗用后，将能够很方便的对他进行删除，而不需要修改我们的代码或者重启项目
+         */
+        //存入accessToken
+        stringRedisTemplate.opsForValue().set(accessTokenKey,accessToken,30,TimeUnit.DAYS);
+        //存入refreshToken
         stringRedisTemplate.opsForValue().set(refreshTokenKey,refreshToken,31,TimeUnit.DAYS);
 
         // 测试，我改了过期时间

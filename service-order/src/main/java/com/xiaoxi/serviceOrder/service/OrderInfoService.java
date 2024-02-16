@@ -1,5 +1,7 @@
 package com.xiaoxi.serviceOrder.service;
 
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xiaoxi.interfaceCommon.constant.CommonStatusEumn;
 import com.xiaoxi.interfaceCommon.constant.OrderConstants;
@@ -7,9 +9,13 @@ import com.xiaoxi.interfaceCommon.dto.OrderInfo;
 import com.xiaoxi.interfaceCommon.dto.PriceRule;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
 import com.xiaoxi.interfaceCommon.request.OrderRequest;
+import com.xiaoxi.interfaceCommon.response.TerminalResponse;
 import com.xiaoxi.interfaceCommon.util.RedisPrefixUtils;
 import com.xiaoxi.serviceOrder.mapper.OrderInfoMapper;
+import com.xiaoxi.serviceOrder.remote.ServiceDriverUserClient;
+import com.xiaoxi.serviceOrder.remote.ServiceMapClient;
 import com.xiaoxi.serviceOrder.remote.ServicePriceClient;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -17,6 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,6 +36,7 @@ import java.util.concurrent.TimeUnit;
  * @since 2024-01-05
  */
 @Service
+@Slf4j
 public class OrderInfoService {
 
     @Autowired
@@ -35,6 +44,9 @@ public class OrderInfoService {
 
     @Autowired
     private ServicePriceClient servicePriceClient;
+
+    @Autowired
+    private ServiceDriverUserClient serviceDriverUserClient;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -52,16 +64,23 @@ public class OrderInfoService {
      * @return
      */
     public ResponseResult add(OrderRequest orderRequest) {
+
+        //判断城市是否有有效的司机（有没有可以接单的司机）
+        String address = orderRequest.getAddress();
+        ResponseResult<Boolean> availableDriver = serviceDriverUserClient.isAvailableDriver(address);
+        log.info("判断城市是否有有效司机："+availableDriver.getData());
+        if(!availableDriver.getData()) {
+            return ResponseResult.fail(CommonStatusEumn.CITY_DRIVER_EMPTY.getCode(),CommonStatusEumn.CITY_DRIVER_EMPTY.getValue());
+        }
+
         //查看计价规则是否为最新
-        ResponseResult<Boolean> isNew = servicePriceClient.isNew(orderRequest.getFareType(), orderRequest.getFareVersion());
-//        //计价规则不存在
-//        if(isNew.getData() == null) {
-//            return ResponseResult.fail(CommonStatusEumn.PRICE_RULE_EMPTY.getCode(),CommonStatusEumn.PRICE_RULE_EMPTY.getValue());
-//        }
-        //是否为最新
-//        if(!isNew.getData()) {
-//            return ResponseResult.fail(CommonStatusEumn.PRICE_RULE_CHANGE.getCode(),CommonStatusEumn.PRICE_RULE_CHANGE.getValue());
-//        }
+        PriceRule priceRule = new PriceRule();
+        priceRule.setFareType(orderRequest.getFareType());
+        priceRule.setFareVersion(orderRequest.getFareVersion());
+        ResponseResult<Boolean> isNew = servicePriceClient.isNew(priceRule);
+        if(!isNew.getData()) {
+            return ResponseResult.fail(CommonStatusEumn.PRICE_RULE_CHANGE.getCode(),CommonStatusEumn.PRICE_RULE_CHANGE.getValue());
+        }
 
         //判断下定单次数一小时内是否超过2次 黑名单
         boolean isDeviceBlack = isDeviceBlack(orderRequest);
@@ -96,7 +115,54 @@ public class OrderInfoService {
         orderInfo.setOrderStatus(OrderConstants.ORDER_START);
 
         orderInfoMapper.insert(orderInfo);
+
+        //派单
+        dispatchRealTimeOder(orderInfo);
+
         return ResponseResult.success();
+    }
+
+
+    @Autowired
+    private ServiceMapClient serviceMapClient;
+
+    /**
+     * 实时派单
+     * @param orderInfo
+     */
+    public void dispatchRealTimeOder(OrderInfo orderInfo) {
+        String depLongitude = orderInfo.getDepLongitude();//出发地经度
+        String depLatitude = orderInfo.getDepLatitude();//出发地纬度
+        String center = depLatitude + "," + depLongitude;
+
+        List<Integer> radiusList = new ArrayList<>();
+        radiusList.add(2000);
+        radiusList.add(4000);
+        radiusList.add(5000);
+
+        ResponseResult<List<TerminalResponse>> listResponseResult = null;
+        for(int i = 0; i< radiusList.size();i++) {
+            Integer radius = radiusList.get(i);
+            listResponseResult = serviceMapClient.terminalAroundSearch(center, radius + "");
+
+            log.info("在半径为" + radius + "范围内，寻找车辆，结果为：" + JSONArray.toJSONString(listResponseResult.getData()));
+            //获得终端
+
+            //解析终端 [{"carId":1742929536430911489,"tid":"819268915"}]
+            JSONArray jsonArray = JSONArray.from(listResponseResult.getData());
+            for(int j = 0;j < jsonArray.size();j++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                String carIdStr = jsonObject.getString("carId");
+                Long carId = Long.parseLong(carIdStr);
+            }
+
+            //根据解析出来的终端，查询车辆信息
+
+            //找到符合的车辆，进行派单
+
+            //如果派单成功，则退出循环
+
+        }
     }
 
     /**
@@ -145,6 +211,11 @@ public class OrderInfoService {
         return false;
     }
 
+    /**
+     * 下单的城市和计价规则是否正常
+     * @param orderRequest
+     * @return
+     */
     private boolean isPriceRuleExists(OrderRequest orderRequest) {
         String fareType = orderRequest.getFareType();
         int index = fareType.indexOf("$");

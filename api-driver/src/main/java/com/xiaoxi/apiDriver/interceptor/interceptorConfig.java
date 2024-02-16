@@ -16,6 +16,9 @@ public class interceptorConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new JwtInterceptor(stringRedisTemplate))
                 .addPathPatterns("/**")
-                .excludePathPatterns("/noAuth");
+                .excludePathPatterns("/noAuth")
+                .excludePathPatterns("/verification-code")
+                .excludePathPatterns("/verification-code-check")
+        ;
     }
 }

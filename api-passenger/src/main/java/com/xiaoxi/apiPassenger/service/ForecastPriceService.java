@@ -21,6 +21,8 @@ public class ForecastPriceService {
         log.info("出发地纬度：" + depLatitude);
         log.info("目的地经度：" + destLongitude);
         log.info("目的地纬度：" + destLatitude);
+        log.info("城市编码：" + cityCode);
+        log.info("车辆类型：" + vehicleType);
 
         //根据经纬度计算价格
         log.info("根据经纬度计算价格");
@@ -32,6 +34,7 @@ public class ForecastPriceService {
         forecastPriceDTO.setCityCode(cityCode);
         forecastPriceDTO.setVehicleType(vehicleType);
         ResponseResult<ForecastPriceResponse> forecastPriceResult = servicePriceClient.forecastPrice(forecastPriceDTO);
+        log.info("价格为：" + forecastPriceResult.getData().getPrice());
 
         //返回价格信息
         ForecastPriceResponse forecastPriceResponse = forecastPriceResult.getData();

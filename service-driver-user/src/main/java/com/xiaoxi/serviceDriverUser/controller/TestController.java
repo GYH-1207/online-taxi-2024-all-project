@@ -1,6 +1,7 @@
 package com.xiaoxi.serviceDriverUser.controller;
 
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
+import com.xiaoxi.serviceDriverUser.mapper.DriverUserMapper;
 import com.xiaoxi.serviceDriverUser.service.DriverUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,5 +21,14 @@ public class TestController {
     @GetMapping("/test-db")
     public ResponseResult testDB() {
         return driverUserService.testDB();
+    }
+
+    @Autowired
+    private DriverUserMapper driverUserMapper;
+
+    @GetMapping("/test-view")
+    public Integer testView() {
+        Integer i = driverUserMapper.selectCityDriverCountByCityCode("1");
+        return i;
     }
 }

@@ -24,6 +24,11 @@ public class PriceRuleService {
     @Autowired
     private PriceRuleMapper priceRuleMapper;
 
+    /**
+     * 添加计价规则 新添加的版本要在老的版本上有变化，否则不能插入
+     * @param priceRule
+     * @return
+     */
     public ResponseResult addPriceRule(PriceRule priceRule) {
         //拼接 运价类型编码
         String cityCode = priceRule.getCityCode();
@@ -109,7 +114,7 @@ public class PriceRuleService {
 
 
     /**
-     * 查询当前版本计价规则是否最新
+     * 判断规则是否最新
      * @param fareType
      * @param fareVersion
      * @return
@@ -132,7 +137,7 @@ public class PriceRuleService {
     }
 
     /**
-     * 根据城市编码和车型查询计价规则是否存在
+     * 判断该城市和对应的车型的计价规则是否存在
      * @param priceRule
      * @return
      */

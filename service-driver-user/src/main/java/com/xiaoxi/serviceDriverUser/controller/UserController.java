@@ -5,6 +5,7 @@ import com.xiaoxi.interfaceCommon.constant.DriverCarConstants;
 import com.xiaoxi.interfaceCommon.dto.DriverUser;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
 import com.xiaoxi.interfaceCommon.response.DriverUserExistResponse;
+import com.xiaoxi.interfaceCommon.response.OrderDriverResponse;
 import com.xiaoxi.serviceDriverUser.service.DriverUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class UserController {
     }
 
     /**
-     * 根据手机号查询用户是否存在
+     * 根据手机号查询司机用户是否存在
      * @param driverPhone
      * @return
      */
@@ -65,5 +66,15 @@ public class UserController {
         driverUserExistResponse.setIfExists(ifExists);
 
         return ResponseResult.success(driverUserExistResponse);
+    }
+
+    /**
+     * 根据车辆ID，查询可以派单的司机信息
+     * @param carId
+     * @return
+     */
+    @GetMapping("/get-available-driver/{carId}")
+    public ResponseResult<OrderDriverResponse> getAvailableDriver(@PathVariable("carId") Long carId) {
+        return driverUserService.getAvailableDriver(carId);
     }
 }

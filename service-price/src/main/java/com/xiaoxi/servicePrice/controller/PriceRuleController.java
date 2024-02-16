@@ -46,18 +46,18 @@ public class PriceRuleController {
     }
 
     /**
-     * 查询当前版本计价规则是否最新
+     * 判断规则是否最新
      * @param fareType
      * @param fareVersion
      * @return
      */
-    @GetMapping("/is-new")
-    public ResponseResult<Boolean> isNew(@RequestParam String fareType,@RequestParam Integer fareVersion) {
-        return priceRuleService.isNew(fareType,fareVersion);
+    @PostMapping("/is-new")
+    public ResponseResult<Boolean> isNew(@RequestBody PriceRule priceRule) {
+        return priceRuleService.isNew(priceRule.getFareType(),priceRule.getFareVersion());
     }
 
     /**
-     * 根据城市编码和车型查询计价规则是否存在
+     * 判断该城市和对应的车型的计价规则是否存在
      * @param priceRule
      * @return
      */
