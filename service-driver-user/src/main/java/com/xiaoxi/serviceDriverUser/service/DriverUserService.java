@@ -100,6 +100,11 @@ public class DriverUserService {
         return ResponseResult.success(driverUser);
     }
 
+    /**
+     * 根据车辆ID，查询可以派单的司机信息
+     * @param carId
+     * @return
+     */
     public ResponseResult<OrderDriverResponse> getAvailableDriver(Long carId) {
         //根据 carId 查询和carId绑定的 driverId：查 表driver_car_binding_relationship
         QueryWrapper<DriverCarBindingRelationship> queryWrapper = new QueryWrapper<>();

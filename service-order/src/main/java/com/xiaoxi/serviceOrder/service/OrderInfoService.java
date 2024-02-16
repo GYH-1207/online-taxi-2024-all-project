@@ -9,6 +9,7 @@ import com.xiaoxi.interfaceCommon.dto.OrderInfo;
 import com.xiaoxi.interfaceCommon.dto.PriceRule;
 import com.xiaoxi.interfaceCommon.dto.ResponseResult;
 import com.xiaoxi.interfaceCommon.request.OrderRequest;
+import com.xiaoxi.interfaceCommon.response.OrderDriverResponse;
 import com.xiaoxi.interfaceCommon.response.TerminalResponse;
 import com.xiaoxi.interfaceCommon.util.RedisPrefixUtils;
 import com.xiaoxi.serviceOrder.mapper.OrderInfoMapper;
@@ -141,6 +142,7 @@ public class OrderInfoService {
         radiusList.add(5000);
 
         ResponseResult<List<TerminalResponse>> listResponseResult = null;
+        radius:
         for(int i = 0; i< radiusList.size();i++) {
             Integer radius = radiusList.get(i);
             listResponseResult = serviceMapClient.terminalAroundSearch(center, radius + "");
@@ -154,9 +156,19 @@ public class OrderInfoService {
                 JSONObject jsonObject = jsonArray.getJSONObject(0);
                 String carIdStr = jsonObject.getString("carId");
                 Long carId = Long.parseLong(carIdStr);
+
+                //根据解析出来的终端，查询车辆信息
+                ResponseResult<OrderDriverResponse> availableDriver = serviceDriverUserClient.getAvailableDriver(carId);
+                if(availableDriver.getCode() == CommonStatusEumn.AVAILABLE_DRIVER_EMPTY.getCode()) {
+                    log.info("没有车俩ID：" + carId + ",对应出车状态的司机");
+                    continue radius;
+                }else {
+                    log.info("车俩ID：" + carId + "，找到了正在出车的司机");
+                    break radius;
+                }
             }
 
-            //根据解析出来的终端，查询车辆信息
+
 
             //找到符合的车辆，进行派单
 
