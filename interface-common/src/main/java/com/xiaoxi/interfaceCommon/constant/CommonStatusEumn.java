@@ -10,6 +10,10 @@ public enum CommonStatusEumn {
      * 验证码
      * 错误：1000-1099
      */
+    CALL_USER_ADD_ERROR(1000,"调用新增用户异常"),
+
+    CHECK_CODE_ERROR(1001,"验证手机号和验证码 异常"),
+
     VERIFICATION_CODE_FAIL(1099,"验证码不正确"),
 
     /**
@@ -37,8 +41,7 @@ public enum CommonStatusEumn {
     PRICE_RULE_CHANGE(1303,"计价规则已经改变，请使用最新的计价规则"),
 
     /**
-     * 行政区域
-     * 错误：1400-1499
+     * 地图信息：1400-1499
      */
     MAP_DIC_DISTRICT_ERROR(1400,"请求地图错误"),
 
@@ -59,6 +62,10 @@ public enum CommonStatusEumn {
 
     AVAILABLE_DRIVER_EMPTY(1506,"可用司机为空"),
 
+    CAR_NOT_EXISTS(1507,"车辆不存在"),
+
+    DRIVER_STATUS_UPDATE_ERROR(1508,"司机工作状态修改失败"),
+
     /**
      * 订单：1600-1699
      */
@@ -69,20 +76,32 @@ public enum CommonStatusEumn {
      */
     DEVICE_IS_BLACK(1601,"该设备超过允许下单次数"),
 
-    /**
-     * 城市未开通叫车服务
-     */
     CITY_SERVICE_NO_SERVICE(1602,"当前城市不提供叫车服务"),
+
+    ORDER_CANCEL_ERROR(1603, "订单取消失败"),
+
+    ORDER_NOT_EXISTS(1604,"订单不存在"),
+
+    ORDER_CAN_NOT_GRAB(1605 , "订单不能被抢"),
+
+    ORDER_GRABING(1606,"订单正在被抢"),
+
+    ORDER_UPDATE_ERROR(1607,"订单修改失败"),
+
+    /**
+     * 统一验证提示 1700-1799
+     */
+    VALIDATION_EXCEPTION(1700,"统一验证框架的错误提示"),
 
     /**
      * 成功
      */
-    SUCCESS(200,"success"),
+    SUCCESS(1,"success"),
 
     /**
      * 失败
      */
-    FAIL(201,"fail")
+    FAIL(0,"统一异常信息fail")
     ;
 
     @Getter
